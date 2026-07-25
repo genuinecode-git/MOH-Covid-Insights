@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-MohCovidInsights.Ingestion-03abb8dc-5fa1-4df1-812d-0b26e38d579c</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Amazon.Lambda.Core" Version="3.1.1" />
+    <PackageReference Include="Amazon.Lambda.Logging.AspNetCore" Version="5.0.0" />
+    <PackageReference Include="Amazon.Lambda.RuntimeSupport" Version="2.1.2" />
+    <PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.10" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.10" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MohCovidInsights.Application\MohCovidInsights.Application.csproj" />
+    <ProjectReference Include="..\MohCovidInsights.Infrastructure\MohCovidInsights.Infrastructure.csproj" />
+    <None Update="appsettings.json" CopyToOutputDirectory="Always" />
+  </ItemGroup>
+</Project>

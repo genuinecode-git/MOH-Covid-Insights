@@ -1,0 +1,253 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/prabathsl/Projects/RhinoTest/MOH-Covid-Insights/src/MohCovidInsights.Infrastructure/MohCovidInsights.Infrastructure.csproj": {}
+  },
+  "projects": {
+    "/Users/prabathsl/Projects/RhinoTest/MOH-Covid-Insights/src/MohCovidInsights.Application/MohCovidInsights.Application.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/prabathsl/Projects/RhinoTest/MOH-Covid-Insights/src/MohCovidInsights.Application/MohCovidInsights.Application.csproj",
+        "projectName": "MohCovidInsights.Application",
+        "projectPath": "/Users/prabathsl/Projects/RhinoTest/MOH-Covid-Insights/src/MohCovidInsights.Application/MohCovidInsights.Application.csproj",
+        "packagesPath": "/Users/prabathsl/.nuget/packages/",
+        "outputPath": "/Users/prabathsl/Projects/RhinoTest/MOH-Covid-Insights/src/MohCovidInsights.Application/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/prabathsl/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "/usr/local/share/dotnet/library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {
+              "/Users/prabathsl/Projects/RhinoTest/MOH-Covid-Insights/src/MohCovidInsights.Domain/MohCovidInsights.Domain.csproj": {
+                "projectPath": "/Users/prabathsl/Projects/RhinoTest/MOH-Covid-Insights/src/MohCovidInsights.Domain/MohCovidInsights.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "allWarningsAsErrors": true,
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[12.1.1, )"
+            },
+            "Microsoft.Extensions.DependencyInjection.Abstractions": {
+              "target": "Package",
+              "version": "[10.0.10, )"
+            },
+            "Microsoft.Extensions.Logging.Abstractions": {
+              "target": "Package",
+              "version": "[10.0.10, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.102/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/prabathsl/Projects/RhinoTest/MOH-Covid-Insights/src/MohCovidInsights.Domain/MohCovidInsights.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/prabathsl/Projects/RhinoTest/MOH-Covid-Insights/src/MohCovidInsights.Domain/MohCovidInsights.Domain.csproj",
+        "projectName": "MohCovidInsights.Domain",
+        "projectPath": "/Users/prabathsl/Projects/RhinoTest/MOH-Covid-Insights/src/MohCovidInsights.Domain/MohCovidInsights.Domain.csproj",
+        "packagesPath": "/Users/prabathsl/.nuget/packages/",
+        "outputPath": "/Users/prabathsl/Projects/RhinoTest/MOH-Covid-Insights/src/MohCovidInsights.Domain/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/prabathsl/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "/usr/local/share/dotnet/library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "allWarningsAsErrors": true,
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.102/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/prabathsl/Projects/RhinoTest/MOH-Covid-Insights/src/MohCovidInsights.Infrastructure/MohCovidInsights.Infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/prabathsl/Projects/RhinoTest/MOH-Covid-Insights/src/MohCovidInsights.Infrastructure/MohCovidInsights.Infrastructure.csproj",
+        "projectName": "MohCovidInsights.Infrastructure",
+        "projectPath": "/Users/prabathsl/Projects/RhinoTest/MOH-Covid-Insights/src/MohCovidInsights.Infrastructure/MohCovidInsights.Infrastructure.csproj",
+        "packagesPath": "/Users/prabathsl/.nuget/packages/",
+        "outputPath": "/Users/prabathsl/Projects/RhinoTest/MOH-Covid-Insights/src/MohCovidInsights.Infrastructure/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/prabathsl/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "/usr/local/share/dotnet/library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {
+              "/Users/prabathsl/Projects/RhinoTest/MOH-Covid-Insights/src/MohCovidInsights.Application/MohCovidInsights.Application.csproj": {
+                "projectPath": "/Users/prabathsl/Projects/RhinoTest/MOH-Covid-Insights/src/MohCovidInsights.Application/MohCovidInsights.Application.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "allWarningsAsErrors": true,
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "AWSSDK.SecretsManager": {
+              "target": "Package",
+              "version": "[4.0.100.6, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.11, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.11, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[9.0.11, )"
+            },
+            "Microsoft.Extensions.Caching.Memory": {
+              "target": "Package",
+              "version": "[10.0.10, )"
+            },
+            "Microsoft.Extensions.Http.Resilience": {
+              "target": "Package",
+              "version": "[10.8.0, )"
+            },
+            "Microsoft.Extensions.Options.DataAnnotations": {
+              "target": "Package",
+              "version": "[10.0.10, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[9.0.*, )"
+            },
+            "Scrutor": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.102/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

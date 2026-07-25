@@ -1,0 +1,88 @@
+{
+    "success": true,
+    "result": {
+        "resource_id": "d_0d1da54a73733d33e40f662f757af537",
+        "fields": [
+            {
+                "type": "numeric",
+                "id": "epi_year"
+            },
+            {
+                "type": "text",
+                "id": "epi_week"
+            },
+            {
+                "type": "text",
+                "id": "clinical_status"
+            },
+            {
+                "type": "text",
+                "id": "age_groups"
+            },
+            {
+                "type": "numeric",
+                "id": "count"
+            },
+            {
+                "type": "int4",
+                "id": "_id"
+            }
+        ],
+        "records": [
+            {
+                "_id": 1,
+                "epi_year": "2023",
+                "epi_week": "2023-09",
+                "clinical_status": "Hospitalised",
+                "age_groups": "0 - 11 years old",
+                "count": "1.7"
+            },
+            {
+                "_id": 2,
+                "epi_year": "2023",
+                "epi_week": "2023-09",
+                "clinical_status": "Hospitalised",
+                "age_groups": "12 - 59 years old",
+                "count": "6.9"
+            },
+            {
+                "_id": 3,
+                "epi_year": "2023",
+                "epi_week": "2023-09",
+                "clinical_status": "Hospitalised",
+                "age_groups": "60 years old and above",
+                "count": "34.9"
+            },
+            {
+                "_id": 4,
+                "epi_year": "2023",
+                "epi_week": "2023-09",
+                "clinical_status": "ICU",
+                "age_groups": "0 - 11 years old",
+                "count": "0.0"
+            },
+            {
+                "_id": 5,
+                "epi_year": "2023",
+                "epi_week": "2023-09",
+                "clinical_status": "ICU",
+                "age_groups": "12 - 59 years old",
+                "count": "0.4"
+            },
+            {
+                "_id": 6,
+                "epi_year": "2023",
+                "epi_week": "2023-09",
+                "clinical_status": "ICU",
+                "age_groups": "60 years old and above",
+                "count": "2.3"
+            }
+        ],
+        "_links": {
+            "start": "/api/action/datastore_search?resource_id=d_0d1da54a73733d33e40f662f757af537&limit=6",
+            "next": "/api/action/datastore_search?resource_id=d_0d1da54a73733d33e40f662f757af537&offset=6&limit=6"
+        },
+        "total": 312,
+        "limit": 6
+    }
+}

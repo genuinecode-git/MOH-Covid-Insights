@@ -1,0 +1,68 @@
+{
+    "success": true,
+    "result": {
+        "resource_id": "d_11e68bba3b3c76733475a72d09759eeb",
+        "fields": [
+            {
+                "type": "numeric",
+                "id": "epi_year"
+            },
+            {
+                "type": "text",
+                "id": "epi_week"
+            },
+            {
+                "type": "numeric",
+                "id": "est_count"
+            },
+            {
+                "type": "int4",
+                "id": "_id"
+            }
+        ],
+        "records": [
+            {
+                "_id": 1,
+                "epi_year": "2023",
+                "epi_week": "2023-09",
+                "est_count": "4426"
+            },
+            {
+                "_id": 2,
+                "epi_year": "2023",
+                "epi_week": "2023-10",
+                "est_count": "10352"
+            },
+            {
+                "_id": 3,
+                "epi_year": "2023",
+                "epi_week": "2023-11",
+                "est_count": "10464"
+            },
+            {
+                "_id": 4,
+                "epi_year": "2023",
+                "epi_week": "2023-12",
+                "est_count": "14467"
+            },
+            {
+                "_id": 5,
+                "epi_year": "2023",
+                "epi_week": "2023-13",
+                "est_count": "28410"
+            },
+            {
+                "_id": 6,
+                "epi_year": "2023",
+                "epi_week": "2023-14",
+                "est_count": "16018"
+            }
+        ],
+        "_links": {
+            "start": "/api/action/datastore_search?resource_id=d_11e68bba3b3c76733475a72d09759eeb&limit=6",
+            "next": "/api/action/datastore_search?resource_id=d_11e68bba3b3c76733475a72d09759eeb&offset=6&limit=6"
+        },
+        "total": 52,
+        "limit": 6
+    }
+}

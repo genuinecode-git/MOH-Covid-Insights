@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "Cor1DOKu7HfzH0/LGEFJL7DRYPzaFDOZth0E8nNXGGw=",
+  "Source": "MohCovidInsights.Api",
+  "BasePath": "_content/MohCovidInsights.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
