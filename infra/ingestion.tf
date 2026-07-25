@@ -29,8 +29,8 @@ resource "aws_lambda_function" "ingestion" {
   timeout       = 300
 
   vpc_config {
-    subnet_ids         = aws_subnet.private[*].id
-    security_group_ids = [aws_security_group.lambda.id]
+    subnet_ids         = module.network.private_subnet_ids
+    security_group_ids = [module.network.lambda_security_group_id]
   }
 
   environment {
@@ -40,23 +40,17 @@ resource "aws_lambda_function" "ingestion" {
     }
   }
 
-  depends_on = [
-    null_resource.image,
-    aws_cloudwatch_log_group.ingestion,
-    aws_iam_role_policy_attachment.ingestion_vpc,
-  ]
+  depends_on = [null_resource.image, aws_cloudwatch_log_group.ingestion, aws_iam_role_policy_attachment.ingestion_vpc]
 }
 
 resource "aws_cloudwatch_event_rule" "ingestion" {
   name                = "${local.prefix}-ingestion-schedule"
-  description         = "Weekly MOH dataset ingestion"
   schedule_expression = var.ingestion_schedule
 }
 
 resource "aws_cloudwatch_event_target" "ingestion" {
-  rule      = aws_cloudwatch_event_rule.ingestion.name
-  target_id = "IngestionLambda"
-  arn       = aws_lambda_function.ingestion.arn
+  rule = aws_cloudwatch_event_rule.ingestion.name
+  arn  = aws_lambda_function.ingestion.arn
 }
 
 resource "aws_lambda_permission" "eventbridge" {
@@ -67,10 +61,8 @@ resource "aws_lambda_permission" "eventbridge" {
   source_arn    = aws_cloudwatch_event_rule.ingestion.arn
 }
 
-# The handler throws when any dataset fails, so Lambda's own error metric is the signal.
 resource "aws_cloudwatch_metric_alarm" "ingestion_failure" {
   alarm_name          = "${local.prefix}-ingestion-failed"
-  alarm_description   = "Dataset ingestion failed"
   namespace           = "AWS/Lambda"
   metric_name         = "Errors"
   statistic           = "Sum"
@@ -79,8 +71,5 @@ resource "aws_cloudwatch_metric_alarm" "ingestion_failure" {
   threshold           = 1
   comparison_operator = "GreaterThanOrEqualToThreshold"
   treat_missing_data  = "notBreaching"
-
-  dimensions = {
-    FunctionName = aws_lambda_function.ingestion.function_name
-  }
+  dimensions          = { FunctionName = aws_lambda_function.ingestion.function_name }
 }

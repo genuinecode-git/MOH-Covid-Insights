@@ -1,32 +1,12 @@
 resource "aws_db_subnet_group" "main" {
   name       = "${local.prefix}-db-subnets"
-  subnet_ids = aws_subnet.isolated[*].id
-
-  tags = { Name = "${local.prefix}-db-subnets" }
+  subnet_ids = module.network.isolated_subnet_ids
+  tags       = { Name = "${local.prefix}-db-subnets" }
 }
 
 resource "random_password" "db" {
   length  = 32
   special = false
-}
-
-resource "aws_secretsmanager_secret" "db" {
-  name                    = "${local.prefix}-db-credentials"
-  description             = "Aurora credentials for the MOH COVID Insights API"
-  recovery_window_in_days = local.is_ephemeral ? 0 : 7
-}
-
-resource "aws_secretsmanager_secret_version" "db" {
-  secret_id = aws_secretsmanager_secret.db.id
-
-  secret_string = jsonencode({
-    username = aws_rds_cluster.main.master_username
-    password = random_password.db.result
-    engine   = "postgres"
-    host     = aws_rds_cluster.main.endpoint
-    port     = aws_rds_cluster.main.port
-    dbname   = aws_rds_cluster.main.database_name
-  })
 }
 
 resource "aws_rds_cluster" "main" {
@@ -40,11 +20,11 @@ resource "aws_rds_cluster" "main" {
   master_password = random_password.db.result
 
   db_subnet_group_name   = aws_db_subnet_group.main.name
-  vpc_security_group_ids = [aws_security_group.database.id]
+  vpc_security_group_ids = [module.network.database_security_group_id]
 
-  storage_encrypted   = true
-  backup_retention_period = local.is_ephemeral ? 1 : 7
-  skip_final_snapshot     = local.is_ephemeral
+  storage_encrypted         = true
+  backup_retention_period   = local.is_ephemeral ? 1 : 7
+  skip_final_snapshot       = local.is_ephemeral
   final_snapshot_identifier = local.is_ephemeral ? null : "${local.prefix}-final"
   deletion_protection       = !local.is_ephemeral
 
@@ -60,4 +40,20 @@ resource "aws_rds_cluster_instance" "writer" {
   instance_class     = "db.serverless"
   engine             = aws_rds_cluster.main.engine
   engine_version     = aws_rds_cluster.main.engine_version
+}
+
+resource "aws_secretsmanager_secret" "db" {
+  name                    = "${local.prefix}-db-credentials"
+  recovery_window_in_days = local.is_ephemeral ? 0 : 7
+}
+
+resource "aws_secretsmanager_secret_version" "db" {
+  secret_id = aws_secretsmanager_secret.db.id
+  secret_string = jsonencode({
+    username = aws_rds_cluster.main.master_username
+    password = random_password.db.result
+    host     = aws_rds_cluster.main.endpoint
+    port     = aws_rds_cluster.main.port
+    dbname   = aws_rds_cluster.main.database_name
+  })
 }

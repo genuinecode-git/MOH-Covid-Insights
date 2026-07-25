@@ -1,5 +1,5 @@
 variable "environment" {
-  description = "Deployment environment name"
+  description = "Deployment environment"
   type        = string
   default     = "dev"
 
@@ -34,7 +34,7 @@ variable "db_max_capacity" {
 }
 
 variable "ingestion_schedule" {
-  description = "EventBridge cron expression for dataset ingestion"
+  description = "EventBridge cron for dataset ingestion"
   type        = string
   default     = "cron(0 18 ? * MON *)"
 }
