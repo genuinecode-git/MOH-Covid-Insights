@@ -9,6 +9,22 @@ resource "random_password" "db" {
   special = false
 }
 
+resource "random_password" "readonly_db" {
+  length  = 32
+  special = false
+}
+
+resource "aws_kms_key" "secrets" {
+  description             = "KMS key for Secrets Manager secrets"
+  deletion_window_in_days = 7
+  enable_key_rotation     = true
+}
+
+resource "aws_kms_alias" "secrets" {
+  name          = "alias/${local.prefix}-secrets"
+  target_key_id = aws_kms_key.secrets.key_id
+}
+
 resource "aws_rds_cluster" "main" {
   cluster_identifier = "${local.prefix}-db"
   engine             = "aurora-postgresql"
@@ -45,6 +61,7 @@ resource "aws_rds_cluster_instance" "writer" {
 resource "aws_secretsmanager_secret" "db" {
   name                    = "${local.prefix}-db-credentials"
   recovery_window_in_days = local.is_ephemeral ? 0 : 7
+  kms_key_id              = aws_kms_key.secrets.arn
 }
 
 resource "aws_secretsmanager_secret_version" "db" {
@@ -52,6 +69,23 @@ resource "aws_secretsmanager_secret_version" "db" {
   secret_string = jsonencode({
     username = aws_rds_cluster.main.master_username
     password = random_password.db.result
+    host     = aws_rds_cluster.main.endpoint
+    port     = aws_rds_cluster.main.port
+    dbname   = aws_rds_cluster.main.database_name
+  })
+}
+
+resource "aws_secretsmanager_secret" "readonly_db" {
+  name                    = "${local.prefix}-db-readonly-credentials"
+  recovery_window_in_days = local.is_ephemeral ? 0 : 7
+  kms_key_id              = aws_kms_key.secrets.arn
+}
+
+resource "aws_secretsmanager_secret_version" "readonly_db" {
+  secret_id = aws_secretsmanager_secret.readonly_db.id
+  secret_string = jsonencode({
+    username = "readonly"
+    password = random_password.readonly_db.result
     host     = aws_rds_cluster.main.endpoint
     port     = aws_rds_cluster.main.port
     dbname   = aws_rds_cluster.main.database_name

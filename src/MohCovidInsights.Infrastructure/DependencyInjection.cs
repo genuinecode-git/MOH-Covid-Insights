@@ -22,6 +22,8 @@ public static class DependencyInjection
         var provider = configuration.GetValue("Database:Provider", "Sqlite");
         var connectionString = configuration.GetConnectionString("Default")
                                ?? "Data Source=mohcovid.db";
+        var readOnlyConnectionString = configuration.GetConnectionString("ReadOnly")
+                                    ?? connectionString;
 
         services.AddDbContext<AppDbContext>(o =>
         {
@@ -29,6 +31,14 @@ public static class DependencyInjection
                 o.UseNpgsql(connectionString);
             else
                 o.UseSqlite(connectionString);
+        });
+
+        services.AddDbContext<ReadOnlyDbContext>(o =>
+        {
+            if (provider.Equals("Postgres", StringComparison.OrdinalIgnoreCase))
+                o.UseNpgsql(readOnlyConnectionString);
+            else
+                o.UseSqlite(readOnlyConnectionString);
         });
 
         services.AddHttpClient<IDataGovSgClient, DataGovSgClient>((sp, http) =>

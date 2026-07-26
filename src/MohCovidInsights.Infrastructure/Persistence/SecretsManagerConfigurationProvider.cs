@@ -10,7 +10,7 @@ using Npgsql;
 
 namespace MohCovidInsights.Infrastructure.Persistence;
 
-public sealed class SecretsManagerConfigurationProvider(string secretArn) : ConfigurationProvider
+public sealed class SecretsManagerConfigurationProvider(string secretArn, string connectionName) : ConfigurationProvider
 {
     public override void Load() => LoadAsync().GetAwaiter().GetResult();
 
@@ -38,7 +38,7 @@ public sealed class SecretsManagerConfigurationProvider(string secretArn) : Conf
 
         Data = new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase)
         {
-            ["ConnectionStrings:Default"] = connectionString,
+            [$"ConnectionStrings:{connectionName}"] = connectionString,
         };
     }
 

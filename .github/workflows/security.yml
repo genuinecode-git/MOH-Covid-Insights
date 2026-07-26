@@ -66,6 +66,47 @@ jobs:
           sarif_file: trivy-${{ matrix.name }}.sarif
           category: trivy-${{ matrix.name }}
 
+  web-deps:
+    name: Web dependency audit
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: src/MohCovidInsights.Web
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: src/MohCovidInsights.Web/package-lock.json
+
+      - name: Install
+        run: npm ci
+
+      - name: Audit
+        run: npm audit --audit-level=high
+        continue-on-error: true
+        
+  dotnet-deps:
+    name: .NET dependency audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Restore
+        run: dotnet restore MohCovidInsights.sln
+
+      - name: Check for vulnerable packages
+        run: |
+          dotnet list MohCovidInsights.sln package --vulnerable --include-transitive 2>&1 | tee audit.log
+          ! grep -q "has the following vulnerable packages" audit.log
+        continue-on-error: true
+
   terraform:
     name: Terraform scan
     runs-on: ubuntu-latest
