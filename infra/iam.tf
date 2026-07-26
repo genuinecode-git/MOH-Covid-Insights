@@ -10,7 +10,7 @@ data "aws_iam_policy_document" "lambda_assume" {
 
 data "aws_iam_policy_document" "read_db_secret" {
   statement {
-    actions   = ["secretsmanager:GetSecretValue"]
+    actions = ["secretsmanager:GetSecretValue"]
     resources = [
       aws_secretsmanager_secret.db.arn,
       aws_secretsmanager_secret.readonly_db.arn,

@@ -35,10 +35,10 @@ resource "aws_lambda_function" "api" {
 
   environment {
     variables = {
-      ASPNETCORE_ENVIRONMENT    = "Lambda"
-      Database__Provider        = "Postgres"
-      DB_SECRET_ARN             = aws_secretsmanager_secret.db.arn
-      DB_READONLY_SECRET_ARN    = aws_secretsmanager_secret.readonly_db.arn
+      ASPNETCORE_ENVIRONMENT = "Lambda"
+      Database__Provider     = "Postgres"
+      DB_SECRET_ARN          = aws_secretsmanager_secret.db.arn
+      DB_READONLY_SECRET_ARN = aws_secretsmanager_secret.readonly_db.arn
     }
   }
 
