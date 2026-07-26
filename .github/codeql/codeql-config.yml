@@ -1,0 +1,21 @@
+name: MohCovidInsights CodeQL config
+
+paths:
+  - src
+
+paths-ignore:
+  - '**/bin/**'
+  - '**/obj/**'
+  - '**/Migrations/**'
+  - '**/*.Designer.cs'
+  - '**/*.g.cs'
+  - '**/*.generated.cs'
+  - '**/GlobalUsings.cs'
+  - '**/wwwroot/**'
+  - '**/node_modules/**'
+  - '**/dist/**'
+  - '**/*.min.js'
+  - '**/coverage/**'
+  - '**/.vite/**'
+  - '**/vite.config.*'
+  - 'tests/**'
