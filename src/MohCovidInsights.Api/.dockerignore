@@ -1,0 +1,25 @@
+# Ignore build outputs
+bin/
+obj/
+
+# IDE
+.vscode/
+.idea/
+.vs/
+
+# Node
+node_modules/
+
+# Logs and OS
+*.log
+.DS_Store
+
+# Env and secrets
+.env
+secrets.*
+
+# NuGet cache
+project.nuget.cache
+
+# Test results
+TestResults/

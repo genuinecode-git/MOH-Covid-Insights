@@ -6,13 +6,13 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 5.70"
     }
-    null = {
-      source  = "hashicorp/null"
-      version = "~> 3.2"
-    }
     random = {
       source  = "hashicorp/random"
       version = "~> 3.6"
+    }
+    null = {
+      source  = "hashicorp/null"
+      version = "~> 3.2"
     }
   }
 }
@@ -29,7 +29,7 @@ provider "aws" {
   }
 }
 
-# CloudFront requires ACM certs in us-east-1; aliased here for future custom-domain use.
+# CloudFront certificates must live in us-east-1; aliased for future custom-domain use.
 provider "aws" {
   alias  = "us_east_1"
   region = "us-east-1"

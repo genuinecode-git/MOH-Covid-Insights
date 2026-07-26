@@ -1,20 +1,3 @@
-data "aws_iam_policy_document" "lambda_assume" {
-  statement {
-    actions = ["sts:AssumeRole"]
-    principals {
-      type        = "Service"
-      identifiers = ["lambda.amazonaws.com"]
-    }
-  }
-}
-
-data "aws_iam_policy_document" "read_db_secret" {
-  statement {
-    actions   = ["secretsmanager:GetSecretValue"]
-    resources = [aws_secretsmanager_secret.db.arn]
-  }
-}
-
 resource "aws_iam_role" "api" {
   name               = "${local.prefix}-api-role"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume.json
@@ -46,8 +29,8 @@ resource "aws_lambda_function" "api" {
   timeout       = 30
 
   vpc_config {
-    subnet_ids         = aws_subnet.private[*].id
-    security_group_ids = [aws_security_group.lambda.id]
+    subnet_ids         = module.network.private_subnet_ids
+    security_group_ids = [module.network.lambda_security_group_id]
   }
 
   environment {
@@ -58,95 +41,31 @@ resource "aws_lambda_function" "api" {
     }
   }
 
-  depends_on = [
-    null_resource.image,
-    aws_cloudwatch_log_group.api,
-    aws_iam_role_policy_attachment.api_vpc,
-  ]
+  depends_on = [null_resource.image, aws_cloudwatch_log_group.api, aws_iam_role_policy_attachment.api_vpc]
 }
 
-# ---- API Gateway REST, proxying everything to the Lambda ----
-
-resource "aws_api_gateway_rest_api" "main" {
-  name        = "${local.prefix}-api"
-  description = "MOH COVID Insights API"
-
-  endpoint_configuration {
-    types = ["REGIONAL"]
-  }
+resource "aws_apigatewayv2_api" "main" {
+  name          = "${local.prefix}-api"
+  protocol_type = "HTTP"
 }
 
-resource "aws_api_gateway_resource" "proxy" {
-  rest_api_id = aws_api_gateway_rest_api.main.id
-  parent_id   = aws_api_gateway_rest_api.main.root_resource_id
-  path_part   = "{proxy+}"
+resource "aws_apigatewayv2_integration" "api" {
+  api_id                 = aws_apigatewayv2_api.main.id
+  integration_type       = "AWS_PROXY"
+  integration_uri        = aws_lambda_function.api.invoke_arn
+  payload_format_version = "2.0"
 }
 
-resource "aws_api_gateway_method" "proxy" {
-  rest_api_id   = aws_api_gateway_rest_api.main.id
-  resource_id   = aws_api_gateway_resource.proxy.id
-  http_method   = "ANY"
-  authorization = "NONE"
+resource "aws_apigatewayv2_route" "proxy" {
+  api_id    = aws_apigatewayv2_api.main.id
+  route_key = "ANY /{proxy+}"
+  target    = "integrations/${aws_apigatewayv2_integration.api.id}"
 }
 
-resource "aws_api_gateway_method" "root" {
-  rest_api_id   = aws_api_gateway_rest_api.main.id
-  resource_id   = aws_api_gateway_rest_api.main.root_resource_id
-  http_method   = "ANY"
-  authorization = "NONE"
-}
-
-resource "aws_api_gateway_integration" "proxy" {
-  rest_api_id             = aws_api_gateway_rest_api.main.id
-  resource_id             = aws_api_gateway_resource.proxy.id
-  http_method             = aws_api_gateway_method.proxy.http_method
-  integration_http_method = "POST"
-  type                    = "AWS_PROXY"
-  uri                     = aws_lambda_function.api.invoke_arn
-}
-
-resource "aws_api_gateway_integration" "root" {
-  rest_api_id             = aws_api_gateway_rest_api.main.id
-  resource_id             = aws_api_gateway_rest_api.main.root_resource_id
-  http_method             = aws_api_gateway_method.root.http_method
-  integration_http_method = "POST"
-  type                    = "AWS_PROXY"
-  uri                     = aws_lambda_function.api.invoke_arn
-}
-
-resource "aws_api_gateway_deployment" "main" {
-  rest_api_id = aws_api_gateway_rest_api.main.id
-
-  triggers = {
-    redeploy = sha1(jsonencode([
-      aws_api_gateway_resource.proxy.id,
-      aws_api_gateway_method.proxy.id,
-      aws_api_gateway_integration.proxy.id,
-      aws_api_gateway_integration.root.id,
-    ]))
-  }
-
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-
-resource "aws_api_gateway_stage" "prod" {
-  rest_api_id   = aws_api_gateway_rest_api.main.id
-  deployment_id = aws_api_gateway_deployment.main.id
-  stage_name    = "prod"
-}
-
-resource "aws_api_gateway_method_settings" "prod" {
-  rest_api_id = aws_api_gateway_rest_api.main.id
-  stage_name  = aws_api_gateway_stage.prod.stage_name
-  method_path = "*/*"
-
-  settings {
-    throttling_rate_limit  = 100
-    throttling_burst_limit = 200
-    metrics_enabled        = true
-  }
+resource "aws_apigatewayv2_stage" "default" {
+  api_id      = aws_apigatewayv2_api.main.id
+  name        = "$default"
+  auto_deploy = true
 }
 
 resource "aws_lambda_permission" "api_gateway" {
@@ -154,5 +73,5 @@ resource "aws_lambda_permission" "api_gateway" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.api.function_name
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_api_gateway_rest_api.main.execution_arn}/*/*"
+  source_arn    = "${aws_apigatewayv2_api.main.execution_arn}/*/*"
 }
