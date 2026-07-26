@@ -114,6 +114,68 @@ Then set the provider before running the API:
     ConnectionStrings__Default="Host=localhost;Port=5432;Database=mohcovid;Username=dbadmin;Password=localdev" \
     dotnet run --project src/MohCovidInsights.Api
 
+### Postgres local configuration example
+
+Add or override the following in `appsettings.Development.json` (or supply as
+environment variables) to target a local Postgres instance:
+
+```json
+{
+    "Database": {
+        "Provider": "Postgres",
+        "SeedDevData": false
+    },
+    "ConnectionStrings": {
+        "Default": "Host=localhost;Port=5432;Database=mohcovid;Username=<username>;Password=<password>"
+    }
+}
+```
+
+### Clean and regenerate EF migrations - recomonded when switch provider 
+
+If you need to remove existing migrations and generate a fresh initial migration
+for the `Infrastructure` project, follow these steps from the repository root.
+
+1. Start Postgres (if using Docker Compose):
+
+```bash
+docker compose up -d db
+```
+
+2. (Optional) Create the database if it does not exist:
+
+```bash
+# uses the postgres superuser from the container or your local psql
+psql -h localhost -U postgres -c "CREATE DATABASE mohcovid;"
+```
+
+3. Remove the existing EF migrations (this deletes the Migrations folder):
+
+```bash
+rm -rf src/MohCovidInsights.Infrastructure/Migrations
+```
+
+4. Create a new initial migration and apply it. The example sets
+`ASPNETCORE_ENVIRONMENT=Development` so the `appsettings.Development.json`
+values (or environment variables) are used during scaffold/update.
+
+```bash
+ASPNETCORE_ENVIRONMENT=Development \
+dotnet ef migrations add InitialCreate \
+    --project src/MohCovidInsights.Infrastructure \
+    --startup-project src/MohCovidInsights.Api
+
+ASPNETCORE_ENVIRONMENT=Development \
+dotnet ef database update \
+    --project src/MohCovidInsights.Infrastructure \
+    --startup-project src/MohCovidInsights.Api
+```
+
+Notes:
+- If you keep `SeedDevData: false` the database will not be populated automatically; run the ingestion sync to populate data.
+- Be careful when deleting migrations in a shared repository — coordinate with the team or prefer adding a new migration that brings schema to the desired state.
+
+
 ## The datasets
 
 Four epi-week series from data.gov.sg collection 522, all published in tidy
