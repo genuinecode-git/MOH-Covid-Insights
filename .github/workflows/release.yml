@@ -88,3 +88,29 @@ jobs:
             ## Container images
 
             Both images are published to GitHub Container Registry.
+
+  release-branch:
+    name: Create release branch
+    needs:
+      - images
+      - release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create release branch from tag
+        env:
+          VERSION: ${{ needs.images.outputs.version }}
+        run: |
+          branch_name="release/${VERSION}"
+
+          if git ls-remote --exit-code --heads origin "$branch_name" >/dev/null 2>&1; then
+            echo "Branch $branch_name already exists."
+            exit 0
+          fi
+
+          git fetch --tags --force
+          git checkout -b "$branch_name" "refs/tags/${VERSION}"
+          git push origin "$branch_name"
