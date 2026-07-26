@@ -12,7 +12,7 @@ COPY src/MohCovidInsights.Domain/ src/MohCovidInsights.Domain/
 COPY src/MohCovidInsights.Application/ src/MohCovidInsights.Application/
 COPY src/MohCovidInsights.Infrastructure/ src/MohCovidInsights.Infrastructure/
 COPY src/MohCovidInsights.Api/ src/MohCovidInsights.Api/
-RUN dotnet publish src/MohCovidInsights.Api/MohCovidInsights.Api.csproj \
+RUN DOTNET_gcServer=0 dotnet publish src/MohCovidInsights.Api/MohCovidInsights.Api.csproj \
     -c Release -o /app/publish \
     --no-restore \
     -p:PublishReadyToRun=false \
