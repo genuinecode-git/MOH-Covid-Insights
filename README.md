@@ -40,7 +40,9 @@ A COVID insights analytics solution built with:
 ## Sucessful page
 
 ### Dashboard
-<img width="1518" height="945" alt="image" src="https://github.com/user-attachments/assets/2663c4a0-1864-406e-902c-a670de39d8a8" />
+<img width="760" height="473" alt="image" src="https://github.com/user-attachments/assets/dbcd9938-9d62-4305-97fe-a5e7f09d5c97" />
+
+<img width="1503" height="944" alt="image" src="https://github.com/user-attachments/assets/4b31abd9-0b05-45cd-9f44-8b55268fa15c" />
 
 ### Data List
-<img width="1518" height="947" alt="image" src="https://github.com/user-attachments/assets/5a823bcd-902d-4c2a-b65d-1dbe807e40a8" />
+<img width="757" height="473" alt="image" src="https://github.com/user-attachments/assets/494bae31-dbc2-4a82-9996-30533e0590c8" />
