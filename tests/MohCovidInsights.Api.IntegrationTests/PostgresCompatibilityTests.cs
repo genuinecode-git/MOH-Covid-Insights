@@ -39,6 +39,7 @@ public sealed class PostgresCompatibilityTests : IAsyncLifetime
         : null;
 
     private AppDbContext _db = null!;
+    private ReadOnlyDbContext _readOnlyDb = null!;
 
     public async Task InitializeAsync()
     {
@@ -50,13 +51,19 @@ public sealed class PostgresCompatibilityTests : IAsyncLifetime
             .UseNpgsql(_postgres.GetConnectionString())
             .Options;
 
+        var readOnlyOptions = new DbContextOptionsBuilder<ReadOnlyDbContext>()
+            .UseNpgsql(_postgres.GetConnectionString())
+            .Options;
+
         _db = new AppDbContext(options);
+        _readOnlyDb = new ReadOnlyDbContext(readOnlyOptions);
         await _db.Database.EnsureCreatedAsync();
     }
 
     public async Task DisposeAsync()
     {
         if (_postgres is null) return;
+        await _readOnlyDb.DisposeAsync();
         await _db.DisposeAsync();
         await _postgres.DisposeAsync();
     }
@@ -119,7 +126,7 @@ public sealed class PostgresCompatibilityTests : IAsyncLifetime
         await _db.SaveChangesAsync();
         _db.ChangeTracker.Clear();
 
-        var repository = new ObservationRepository(_db);
+        var repository = new ObservationRepository(_readOnlyDb);
         var results = await repository.GetAsync(
             new EpiWeekRange(new EpiWeek(2023, 26), new EpiWeek(2024, 1)),
             [MetricCode.EstimatedInfections], "all");
@@ -139,7 +146,7 @@ public sealed class PostgresCompatibilityTests : IAsyncLifetime
         await _db.SaveChangesAsync();
         _db.ChangeTracker.Clear();
 
-        var repository = new ObservationRepository(_db);
+        var repository = new ObservationRepository(_readOnlyDb);
         var results = await repository.GetAllDimensionsAsync(
             new EpiWeekRange(new EpiWeek(2023, 9), new EpiWeek(2023, 9)),
             [MetricCode.AvgHospitalisedCases]);
