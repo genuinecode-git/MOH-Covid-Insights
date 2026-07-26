@@ -7,7 +7,7 @@ using MohCovidInsights.Infrastructure.Persistence;
 
 namespace MohCovidInsights.Infrastructure.Repositories;
 
-public sealed class DatasetCatalogue(AppDbContext db, IOptions<DataGovSgOptions> options) : IDatasetCatalogue
+public sealed class DatasetCatalogue(ReadOnlyDbContext db, IOptions<DataGovSgOptions> options) : IDatasetCatalogue
 {
     public async Task<IReadOnlyList<DatasetCoverageInfo>> GetCoverageAsync(CancellationToken ct = default)
     {

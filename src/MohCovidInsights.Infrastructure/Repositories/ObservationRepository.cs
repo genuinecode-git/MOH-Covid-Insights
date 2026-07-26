@@ -5,7 +5,7 @@ using MohCovidInsights.Infrastructure.Persistence;
 
 namespace MohCovidInsights.Infrastructure.Repositories;
 
-public sealed class ObservationRepository(AppDbContext db) : IObservationRepository
+public sealed class ObservationRepository(ReadOnlyDbContext db) : IObservationRepository
 {
     public async Task<IReadOnlyList<WeeklyObservation>> GetAllDimensionsAsync(EpiWeekRange range, IReadOnlyCollection<MetricCode> metrics, CancellationToken ct = default)
     {

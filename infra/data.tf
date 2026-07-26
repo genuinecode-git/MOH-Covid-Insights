@@ -9,6 +9,11 @@ resource "random_password" "db" {
   special = false
 }
 
+resource "random_password" "readonly_db" {
+  length  = 32
+  special = false
+}
+
 resource "aws_rds_cluster" "main" {
   cluster_identifier = "${local.prefix}-db"
   engine             = "aurora-postgresql"
@@ -52,6 +57,22 @@ resource "aws_secretsmanager_secret_version" "db" {
   secret_string = jsonencode({
     username = aws_rds_cluster.main.master_username
     password = random_password.db.result
+    host     = aws_rds_cluster.main.endpoint
+    port     = aws_rds_cluster.main.port
+    dbname   = aws_rds_cluster.main.database_name
+  })
+}
+
+resource "aws_secretsmanager_secret" "readonly_db" {
+  name                    = "${local.prefix}-db-readonly-credentials"
+  recovery_window_in_days = local.is_ephemeral ? 0 : 7
+}
+
+resource "aws_secretsmanager_secret_version" "readonly_db" {
+  secret_id = aws_secretsmanager_secret.readonly_db.id
+  secret_string = jsonencode({
+    username = "readonly"
+    password = random_password.readonly_db.result
     host     = aws_rds_cluster.main.endpoint
     port     = aws_rds_cluster.main.port
     dbname   = aws_rds_cluster.main.database_name

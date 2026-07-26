@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="../build/MohCovidInsights.Api.props" />
-</Project>
