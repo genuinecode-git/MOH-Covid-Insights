@@ -96,3 +96,25 @@ resource "aws_s3_bucket_policy" "web" {
   bucket = aws_s3_bucket.web.id
   policy = data.aws_iam_policy_document.web_bucket.json
 }
+
+# Uploads the built SPA. `aws s3 sync` is simpler and faster than one
+# aws_s3_object per file, and re-runs only when the build output changes.
+resource "null_resource" "web_deploy" {
+  triggers = {
+    dist_hash = sha256(join("", [
+      for f in fileset(var.web_dist_path, "**") :
+      filesha256("${var.web_dist_path}/${f}")
+    ]))
+  }
+
+  provisioner "local-exec" {
+    command = <<-EOT
+      set -euo pipefail
+      aws s3 sync ${var.web_dist_path} s3://${aws_s3_bucket.web.id} --delete
+      aws cloudfront create-invalidation \
+        --distribution-id ${aws_cloudfront_distribution.main.id} --paths "/*"
+    EOT
+  }
+
+  depends_on = [aws_s3_bucket_policy.web]
+}
