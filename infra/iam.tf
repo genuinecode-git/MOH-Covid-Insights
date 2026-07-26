@@ -16,4 +16,12 @@ data "aws_iam_policy_document" "read_db_secret" {
       aws_secretsmanager_secret.readonly_db.arn,
     ]
   }
+
+  statement {
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey",
+    ]
+    resources = [aws_kms_key.secrets.arn]
+  }
 }
