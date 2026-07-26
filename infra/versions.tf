@@ -30,6 +30,7 @@ provider "aws" {
 }
 
 # CloudFront certificates must live in us-east-1; aliased for future custom-domain use.
+# tflint-ignore: terraform_unused_declarations
 provider "aws" {
   alias  = "us_east_1"
   region = "us-east-1"
