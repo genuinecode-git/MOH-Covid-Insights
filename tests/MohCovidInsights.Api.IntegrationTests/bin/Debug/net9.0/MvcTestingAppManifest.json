@@ -1,6 +1,0 @@
-{
-  "MohCovidInsights.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "\/Users\/prabathsl\/Projects\/Rhino\/moh-covid-insights\/src\/MohCovidInsights.Api",
-  "MohCovidInsights.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "\/Users\/prabathsl\/Projects\/Rhino\/moh-covid-insights\/src\/MohCovidInsights.Application",
-  "MohCovidInsights.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "\/Users\/prabathsl\/Projects\/Rhino\/moh-covid-insights\/src\/MohCovidInsights.Domain",
-  "MohCovidInsights.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "\/Users\/prabathsl\/Projects\/Rhino\/moh-covid-insights\/src\/MohCovidInsights.Infrastructure"
-}
